@@ -1,58 +1,46 @@
 import { React, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-const Projects = () => {
-    const [data, setData] = useState(0);
-    const getData = async () => {
-        const { data } = await axios({
-            method: 'GET',
-            url: 'https://localhost:7072/todoitems',
+import BaseURL from './BaseURL.json';
+const Projects = (state) => {
+    const location = useLocation();
+    const [task, setTask] = useState(0);
+    const [users, setUsers] = useState(0);
+    const baseUrl = BaseURL.baseUrl;
+    const getTask = () => {
+        axios.get(`${baseUrl}/tasks/getbyprojectid/${location.state.id}`, {
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json; charset=utf-8",
+                "ngrok-skip-browser-warning": "any"
             }
-        }).catch(data => { unAuth() })
-        setData(data)
+        }).
+            then(data => { setTask(data.data) }).catch(err => { console.log(err) })
+    }
+    const getUsers = (id) => {
+        axios.get(`${baseUrl}/tasks/gettaskusers/${id}`, {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json; charset=utf-8",
+                "ngrok-skip-browser-warning": "any"
+            }
+        }).then(data => {/*setUsers(data.data)*/console.log(data)}).catch(err => {console.log(err)})
     }
     useEffect(() => {
-        getData();
+        getTask()
     }, [])
-    const navigate = useNavigate()
-    const clear = (event) => {
-        event.preventDefault()
-        localStorage.clear()
-        navigate('/login')
-    }
-    const unAuth = () => {
-        localStorage.clear()
-        navigate('/login')
-    }
     return (
-        <div className="App">
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Lokasyon</th>
-                        <th scope="col">Gezilecek Yer</th>
-                        <th scope="col">Tamamlandı mı ?</th>
-                    </tr>
-                </thead>
-                {
-                data.map((todo) => (
-                    <tbody>
-                        <tr>
-                            <th scope="row"></th>
-                            <td>{todo.location}</td>
-                            <td>{todo.job}</td>
-                            <td>
-                                
-                            </td>
-                        </tr>
-                    </tbody>
-                ))
-            }
-            </table>
-            
+        <div>
+            {Object.values(task).map(key => (
+                <div className="card m-3">
+                <div className="card-title m-2" style={{"display":""}}>
+                    {key.title}
+                    <div className="card-body">
+                        {getUsers(key.id)}
+                    </div>
+                </div>
+                </div>
+            ))}
         </div>
     )
 }

@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { json, useNavigate } from "react-router-dom";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import Sidebar from "./Sidebar";
-import Profile from "./Profile";
-import Projects from "./Projects";
-import PrivateRoute from "../PrivateRoute/ProtectedRoute";
+import LastSeen from "./LastSeen";
+import BaseURL from './BaseURL.json';
 function Unique(props) {
     const [data, setData] = useState(0);
-    const getData = async () => {
-        const { data } = await axios({
-            method: 'GET',
-            url: 'https://localhost:7072/authenticate',
+    const baseUrl = BaseURL.baseUrl;
+    const addProject = (event) => {
+        axios({
+            method : "POST",
+            url : "http://localhost:5072/todoitems",
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            data : {
+                "location": Inputloc.current.value,
+                "job" : Inputjob.current.value,
+                "isComplete" : false
             }
-        }).catch(data => { unAuth() })
-        setData(data)
+        })
+        window.location.reload()
     }
-    useEffect(() => {
-        getData();
-    }, [])
     const navigate = useNavigate()
     const clear = (event) => {
-        event.preventDefault()
         localStorage.clear()
         navigate('/login')
     }
@@ -32,10 +32,30 @@ function Unique(props) {
         localStorage.clear()
         navigate('/login')
     }
+    const Inputjob = useRef(null);
+    const Inputloc = useRef(null);
     return (
-        <div className="App">
-            <Sidebar logOut={clear} name={data.name}/>
-        </div>
-    )           
+        <>
+
+            <div className="App">
+                <div style={{ "position": "absolute", "right": "1rem", "top": "1em" }}>
+                    <LastSeen />
+                </div>
+                <div className="card m-5" style={{ "width": "50%","textAlign":"center" }}>
+                    <img src="https://serving.photos.photobox.com/32307779d65eebc59486b1b3da085e5132d4e83f74c536f2d9a4e0b085d17a27a779f3e6.jpg" style={{ "width": "100%" }} />
+                        <div className="card-body">
+                            <h5 className="card-title">Proje Ekle</h5>
+                            <div className="form-group">
+                                <input placeholder="Projenize isim verin" ref={Inputloc} className="form-control" id="exampleFormControlInput1"/>
+                                <input placeholder="İşlem Giriniz" ref={Inputjob} className="form-control mt-2"/>
+                            <button className="btn btn-primary mt-3" onClick={addProject}>
+                                Proje Ekle
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </>
+    )
 }
 export default Unique;

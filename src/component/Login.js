@@ -3,10 +3,9 @@ import image from "./LoginPage.jpg";
 function Login(props){
     return (
         <div style={{ backgroundImage:`url(${image})`, backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize:"cover"}}>
-            <br/>
             <div className="container justify-center" id="parentKart">
-                <form id="sampleForm" className="p-3">
-                        <div className="form-group p-4">
+                <form id="sampleForm" className="p-5">
+                        <div className="form-group p-5">
                             <div className="card-header bg-transparent" style={{ border: "none" }}><i style={{ fontSize: "36px" }} className="fa-sharp text-primary fa-solid fa-right-to-bracket d-flex justify-content-center"></i>
                                 <h3 className="mt-2 d-flex justify-content-center">Task Teamer</h3>
                                 <h4 className="mt-2 d-flex justify-content-center text-muted">Hoşgeldiniz!</h4>
@@ -23,7 +22,6 @@ function Login(props){
                         </div>
                     <p className="p-2 m-3">Hesabınız yok mu ?  <a href="/Register" style={{ textDecoration: "none" }}>  Kayıt Ol</a></p>
                 </form>
-                <br/>
             </div>
         </div>
     )        
