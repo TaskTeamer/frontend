@@ -1,11 +1,12 @@
 import React, { useEffect, useState} from "react";
 import {
     FaRegClock,
-    FaRegStar
+    FaRegStar,
+    FaTrash
 } from "react-icons/fa";
 import { BsPencilSquare } from "react-icons/bs";
 import axios from "axios";
-import {Route, Routes,useNavigate} from "react-router-dom";
+import {Link, Route, Routes,useNavigate} from "react-router-dom";
 import BaseURL from './BaseURL.json';
 import Projects from "./Projects";
 function LastSeen() {
@@ -14,11 +15,19 @@ function LastSeen() {
     const navigate = useNavigate();
     const getProjects = () => {
         axios.get(`${baseUrl}/projects/getbyuserid/${localStorage.getItem('userId')}`, {headers: {
-            "Access-Control-Allow-Origin" : "*",
+            /*"Access-Control-Allow-Origin" : "*",
             "Content-Type" : "application/json; charset=utf-8",
-            "ngrok-skip-browser-warning":"any"
+            "ngrok-skip-browser-warning":"any"*/
           }}).
         then(data => {setProjects(data.data)}).catch(err => {console.log(err)})
+    }
+    const deleteProject = (pId) =>  {
+        axios.delete(`${baseUrl}/projects/${pId}`)
+        .then(data => console.log(data))
+        .catch(err => {console.log(err)})
+    }
+    const addProject = () => {
+
     }
     useEffect(() => {
         getProjects()
@@ -42,11 +51,12 @@ function LastSeen() {
                 {Object.values(projects).map(key => (
                     <div className="card row m-2">
                         <center>
-                            <button onClick={() => {toComponentB(key.id)}} className="col card" style={{"border":"none"}}  key={key.name}>
+                            <button onClick={() => {toComponentB(key.id)}}  className="col card text-primary fs-5" style={{"border":"none"}}  key={key.name}>
                                 {key.name}
                             </button>
                         </center>
-                        <p style={{ "textAlign": "center" }} key={key.user_name}>Oluşturan : {key.user_name} </p>
+                        <p style={{"textAlign": "center"}} key={key.user_name}>Oluşturan : {key.user_name} </p>
+                        <center><big><FaTrash onClick={() => deleteProject(key.id)} className="text-danger mr-2"/></big></center>
                     </div>
                 ))}
                 

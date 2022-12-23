@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRoutes } from 'react';
+import React, { useState, useEffect, useRoutes} from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Register from './Register';

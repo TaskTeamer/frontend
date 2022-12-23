@@ -2,10 +2,12 @@ import { React, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import BaseURL from './BaseURL.json';
-const Projects = (state) => {
+import { FaDiscourse } from "react-icons/fa";
+import ReactDOMServer from 'react-dom/server';
+function Projects(state){
     const location = useLocation();
     const [task, setTask] = useState(0);
-    const [users, setUsers] = useState(0);
+    const [user,setUsers] = useState(1);
     const baseUrl = BaseURL.baseUrl;
     const getTask = () => {
         axios.get(`${baseUrl}/tasks/getbyprojectid/${location.state.id}`, {
@@ -24,7 +26,11 @@ const Projects = (state) => {
                 "Content-Type": "application/json; charset=utf-8",
                 "ngrok-skip-browser-warning": "any"
             }
-        }).then(data => {/*setUsers(data.data)*/console.log(data)}).catch(err => {console.log(err)})
+        }).then(data => {
+            console.log(data.data)
+            setUsers(data.data)
+        }).catch(err => {
+        })
     }
     useEffect(() => {
         getTask()
@@ -33,12 +39,16 @@ const Projects = (state) => {
         <div>
             {Object.values(task).map(key => (
                 <div className="card m-3">
-                <div className="card-title m-2" style={{"display":""}}>
-                    {key.title}
-                    <div className="card-body">
-                        {getUsers(key.id)}
+                    <div className="card-title m-2" style={{ "display": "" }}>
+                        {key.title}
+                        <div className="card-body p-4" id="#parent">
+                            {getUsers(key.id)}
+                            <div>Üyeler : </div>
+                            {Object.values(user).map(key => (
+                                <div>{key.id}</div>
+                            ))}
+                        </div>
                     </div>
-                </div>
                 </div>
             ))}
         </div>

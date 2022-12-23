@@ -8,8 +8,6 @@ import {
     FaHome,
 } from "react-icons/fa";
 import { NavLink,Link, Outlet } from 'react-router-dom';
-import Profile from './Profile';
-import Projects from './Projects';
 import './Sidebar.css'
 const Sidebar = (props, { children }) => {
     const [isOpen, setIsOpen] = useState(false);
