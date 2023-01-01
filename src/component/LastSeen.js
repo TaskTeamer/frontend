@@ -54,11 +54,10 @@ function LastSeen() {
                 {Object.values(projects).map(key => (
                     <div className="card row m-2">
                         <center key={key.name}>
-                            <button onClick={() => { toComponentB(key.id) }} className="col card text-primary fs-5" style={{ "border": "none" }} >
+                            <button onClick={() => { toComponentB(key.id) }} className="col card text-primary fs-5 mb-3" style={{ "border": "none" }} >
                                 {key.name}
                             </button>
                         </center>
-                        <p style={{ "textAlign": "center" }} key={key.user_name}>Oluşturan : {key.user_name} </p>
                         <center key={key.id}><big><FaTrash onClick={(event) => deleteProject(event, key.id)} className="text-danger mr-2" /></big></center>
                     </div>
                 ))}

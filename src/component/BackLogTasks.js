@@ -133,12 +133,12 @@ function BackLogTasks(state, props) {
                     <div class="row gx-5">
                         {Object.values(key.projectList).map(pList => (
                                 <div className='col p-3 m-4 card'>
-                                    <div className="card-title" key={key.user.user_name}><FaUserCircle/> {key.user.user_name}</div>
+                                    <div className="card-title text-dark text-opacity-75" key={key.user.user_name}><FaUserCircle/> {key.user.user_name}</div>
                                     <div className='card-body'> {pList.section_id == 1 ? <div className='bg-warning text-light'>{sections[pList.section_id - 1]?.name}</div>
                                         : pList.section_id == 2 ? <div className='bg-secondary text-white'>{sections[pList.section_id - 1]?.name}</div>
                                             : pList.section_id == 3 ? <div className='bg-primary text-white'>{sections[pList.section_id - 1]?.name}</div>
                                                 : <div className='bg-success text-white'>{sections[pList.section_id - 1]?.name}</div>}</div>
-                                    <div className='text-bg-info'><h5>{pList.title}</h5><br />
+                                    <div className='text-bg-info'><h5>{pList.title}</h5>
                                         <b>{pList.description}</b>
                                         {Date.parse(pList.end_date) >= Date.now() ?
                                             <div className="card text-bg-success">{moment(pList.end_date).format('DD.MM.YYYY')}</div> :

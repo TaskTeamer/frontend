@@ -45,8 +45,8 @@ function AllProjects(props) {
             {Object.values(projects).map(key => (
                 <div className='row gx-5 p-3'>
                     <div className="col card row m-2">
-                        <div className='card-title p-3'>{key.name}</div>
-                        <p style={{ "textAlign": "center" }} key={key.user_name}>Oluşturan : {key.user_name} </p>
+                        <h4 className='card-title p-3'>{key.name}</h4>
+                        <p style={{ "textAlign": "center" }} key={key.user_name}>{key.user_name} üyesiniz </p>
                     </div>
                     <div class="col card p-3">
                         <input type="text" class="form-control" onChange={getUserName} placeholder='Kullanıcı Adı'/>
