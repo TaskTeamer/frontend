@@ -3,7 +3,7 @@ import {
     FaBriefcase,
     FaBars,
     FaUserAlt,
-    FaRegChartBar,
+    FaProjectDiagram,
     FaChevronRight,
     FaHome,
 } from "react-icons/fa";
@@ -22,10 +22,16 @@ const Sidebar = (props, { children }) => {
             icon: <FaHome/>
         },
         {
+            path:"main/projects",
+            name : "Projeler",
+            icon : <FaProjectDiagram/>
+        },
+        {
             path: "/login",
             name: "Çıkış",
             icon: <FaChevronRight onClick={clear}/>
         }
+        
         
     ]
     return (
@@ -41,7 +47,7 @@ const Sidebar = (props, { children }) => {
                     menuItem.map((item, index) => (
                         <Link to={item.path} key={index} className="link" activeclassname="active">
                             <div className="icon">{item.icon}</div>
-                            <div style={{ display: isOpen ? "block" : "none" }} className="link_text">{item.name}</div>
+                            <div style={{ display: isOpen ? "block" : "none","padding":"15px" }} className="link_text">{item.name}</div>
                         </Link>
                       ))
                 }

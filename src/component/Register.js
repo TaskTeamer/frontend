@@ -9,7 +9,7 @@ function Register() {
     const onHeaderClick = (event) => {
         event.preventDefault();
         var pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-        let len = this.state.users.length;
+        //let len = this.state.users.length;
         if (event.currentTarget.parentElement[0].value.length !== 0 && event.currentTarget.parentElement[1].value.length !== 0 && event.currentTarget.parentElement[2].value.length !== 0
             && event.currentTarget.parentElement[3].value.length !== 0 && event.currentTarget.parentElement[4].value.length !== 0 && event.currentTarget.parentElement[5].value.length !== 0) {
             if (event.currentTarget.parentElement[3].value.match(pattern)) {
@@ -26,7 +26,7 @@ function Register() {
                         alert("Eklenmedi")
                     }).then(res => {
                         alert("Kayıt Başarılı")
-                        this.navigate('/login')})
+                        navigate('/login')})
                     ;
                 }
             } else {

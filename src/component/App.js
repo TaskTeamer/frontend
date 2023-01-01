@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRoutes} from 'react';
+import React, { useState} from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Register from './Register';
@@ -6,12 +6,12 @@ import Login from './Login';
 import axios from 'axios';
 import Unique from './Unique';
 import PrivateRoute from '../PrivateRoute/ProtectedRoute';
-import SelectedProject from './BackLogTasks';
 import Profile from './Profile';
 import Projects from './Projects';
 import SidebarLayout from './SidebarLayout';
 import BaseURL from './BaseURL.json';
 import BackLogTasks from './BackLogTasks';
+import AllProjects from './AllProjects';
 function App() {
     const navigate = useNavigate();
     const baseUrl = BaseURL.baseUrl;
@@ -51,6 +51,7 @@ function App() {
                         <Route path='/main/profile' element={<Profile />} />
                         <Route path='/main/project' element={<Projects/>} />
                         <Route path='/main/backlogtasks' element={<BackLogTasks/>}/>
+                        <Route path="main/projects" element={<AllProjects/>}/>
                     </Route>
                 </Route>
                 <Route path="Login" element={<Login login={auth} />}></Route>

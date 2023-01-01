@@ -21,8 +21,7 @@ function Unique(props) {
                 "teamName" : Inputjob.current.value,
                 "team" : [localStorage.getItem('userId')]
             }
-        })
-        window.location.reload()
+        }).catch(err => {alert("Oturumunuz Sonlandırılmıştır devam etmek için tekrar giriş yapınız"); navigate('/login') }).then(window.location.reload(false))
     }
     const navigate = useNavigate()
     const clear = (event) => {
