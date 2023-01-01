@@ -1,56 +1,32 @@
+import BaseURL from './BaseURL.json';
 import { React, useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import BaseURL from './BaseURL.json';
-import { format } from 'date-fns';
-import Moment from 'moment';
-import moment from "moment";
+import axios from 'axios';
+import moment, { updateLocale } from "moment";
 import {
-    FaAngleRight,
-    FaCheck
+    FaCheck,
+    FaPen,
+    FaAngleLeft
 } from "react-icons/fa";
-function Projects(state) {
+function BackLogTasks(state, props) {
+    const [backlogTask, setBacklogTask] = useState(0);
     const location = useLocation();
-    const [activeTask, setActiveTask] = useState(0);
-    const baseUrl = BaseURL.baseUrl;
-    const [sections, setSections] = useState(0);
     const navigate = useNavigate();
-    const getActiveTask = () => {
-        axios({
-            method: "GET",
-            url: `${baseUrl}/tasks/getprojectwithuser/${location.state.id}/active`,
+    const [value, setValue] = useState();
+    const [sections, setSections] = useState(0);
+    let counter = 0;
+    const baseUrl = BaseURL.baseUrl;
+    const getBacklogTask = () => {
+        axios.get(`${baseUrl}/tasks/getprojectwithuser/${location.state.id}/backlog`, {
             headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json; charset=utf-8",
+                "ngrok-skip-browser-warning": "any",
                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
             }
         }).
-            then(data => { setActiveTask(data.data) })
-            .catch(err => { alert("Oturumunuz Sonlandırılmıştır devam etmek için tekrar giriş yapınız"); navigate('/login') })
-    }
-    const addTask = (e) => {
-        e.preventDefault()
-        axios({
-            method: "POST",
-            url: `${baseUrl}/tasks/`,
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-            },
-            data: {
-                "title": `${InputTitle.current.value}`,
-                "description": `${InputDesc.current.value}`,
-                "creatorId": `${localStorage.getItem('userId').toString()}`,
-                "createDate": `${moment(Date.now()).format("YYYY-MM-DD HH:MM")}`,
-                "endDate": `${moment(InputEndDate.current.value).format("YYYY-MM-DD HH:mm").toString()}`,
-                "statusId": 2,
-                "sectionId": 1,
-                "projectId": location.state.id
-            }
-        }).then(data => { alert("Eklendi"); window.location.reload(false); }).catch(err => { console.log(err) })
-    }
-    const goBacklog = () => {
-        navigate('/main/backlogtasks', { state: { id: location.state.id } });
-    }
-    const getEndDate = (e) => {
-        e.preventDefault();
+            then(data => { setBacklogTask(data.data); console.log(data.data[0]) })
+            .catch(err => { console.log(err) })
     }
     const changeSection = (e, pId) => {
         e.preventDefault();
@@ -84,27 +60,56 @@ function Projects(state) {
             }
         }).then(data => { console.log(data) }).catch(err => console.log(err))
     }
+    const changeStatus = (e) => {
+        e.preventDefault();
+    }
+    const addTask = (e) => {
+        e.preventDefault()
+        if (InputTitle.current.value.length != 0 && InputDesc.current.value.length != 0 && InputEndDate.current.value.length != 0) {
+            axios({
+                method: "POST",
+                url: `${baseUrl}/tasks/`,
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                },
+                data: {
+                    "title": `${InputTitle.current.value}`,
+                    "description": `${InputDesc.current.value}`,
+                    "creatorId": `${localStorage.getItem('userId').toString()}`,
+                    "createDate": `${moment(Date.now()).format("YYYY-MM-DD HH:MM")}`,
+                    "endDate": `${moment(InputEndDate.current.value).format("YYYY-MM-DD HH:mm").toString()}`,
+                    "statusId": 1,
+                    "sectionId": 1,
+                    "projectId": location.state.id
+                }
+            }).then(data => { alert("Eklendi"); window.location.reload(false); }).catch(err => { console.log(err) })
+        }
+        else {
+            alert("Task Eklemek için ayrılan alanları eksiksiz doldurunuz ! ");
+        }
+    }
+    const goActiveTasks = () => {
+        navigate('/main/project', { state: { id: location.state.id } });
+    }
     useEffect(() => {
-        getActiveTask()
+        getBacklogTask();
         axios({
             method: "GET",
             url: `${baseUrl}/sections`,
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem('accessToken')
             }
-        }).then(data => { setSections(data.data) }).catch(err => { console.log(err) })
+        }).then(data => { setSections(data.data) })
     }, [])
     const InputTitle = useRef(null);
     const InputDesc = useRef(null);
     const InputEndDate = useRef(null);
-    const CheckActive = useRef(null);
-    const CheckBacklog = useRef(null);
     return (
         <div className="App">
             <div class="container overflow-hidden text-center p-2">
-                <div className="card text-bg-secondary p-3 mt-1 text-light">Active Görevleriniz</div>
-                <button className='btn btn-sm btn-primary pe-2 mt-1' onClick={() => goBacklog()}>Backlog Tasklara Dönmek İçin Tıklayınız <FaAngleRight/> </button>
-                {activeTask.length <= 0 ? <div className="card bg-danger text-white mt-5 p-3"><div className="card-title p-2">Active Task Bulunamadı ! </div></div> : Object.values(activeTask).map(key => (
+                <div className="card text-bg-secondary p-3 mt-1 text-light">Backlog Görevleriniz</div>
+                <button className='btn btn-sm btn-primary pe-2 mt-1' onClick={() => goActiveTasks()}><FaAngleLeft /> Aktif Tasklara Dönmek İçin Tıklayınız</button>
+                {backlogTask.length <= 0 ? <div className="card bg-danger text-white mt-5 p-3"><div className="card-title p-2">Backlog Task'ınız Bulunamadı ! </div></div> : Object.values(backlogTask).map(key => (
                     <div class="row gx-5 card-title m-1">
                         {Object.values(key.projectList).map(pList => (
                             <div className="col card">
@@ -152,4 +157,4 @@ function Projects(state) {
         </div>
     )
 }
-export default Projects;
+export default BackLogTasks;

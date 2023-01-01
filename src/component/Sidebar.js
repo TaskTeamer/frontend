@@ -22,16 +22,6 @@ const Sidebar = (props, { children }) => {
             icon: <FaHome/>
         },
         {
-            path: "/main/profile",
-            name: "Profil",
-            icon: <FaUserAlt />
-        },
-        {
-            path: "/logged/analytics",
-            name: "Analytics",
-            icon: <FaRegChartBar/>
-        },
-        {
             path: "/login",
             name: "Çıkış",
             icon: <FaChevronRight onClick={clear}/>
@@ -46,7 +36,7 @@ const Sidebar = (props, { children }) => {
                     <div style={{ marginLeft: isOpen ? "30px" : "0px" }} className="bars">
                         <FaBars onClick={toggle} />
                     </div>
-                </div>
+                </div> 
                 {
                     menuItem.map((item, index) => (
                         <Link to={item.path} key={index} className="link" activeclassname="active">

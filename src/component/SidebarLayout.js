@@ -8,15 +8,13 @@ const SidebarLayout = () => {
   const [data, setData] = useState(0);
   const baseUrl = BaseURL.baseUrl;
   const getData = () => {
-    axios.get(`${baseUrl}/projects/getbyuserid/${localStorage.getItem('userId')}`, {headers: {
-      "Access-Control-Allow-Origin" : "*",
-      "Content-Type" : "application/json; charset=utf-8",
-      "ngrok-skip-browser-warning":"any"
-    }})
-      .then(res => {
-          setData(res)
-      })
-      .catch(err => {console.log(err)})
+    axios({
+      method : "GET",
+      url : `${baseUrl}/projects/getbyuserid/${localStorage.getItem('userId')}`,
+      headers : {
+        "Authorization" : "Bearer "+localStorage.getItem('accessToken')
+      }
+    }).then(data => {setData(data)}).catch(err => {console.log(err)})
   }
   useEffect(() => {
     getData()

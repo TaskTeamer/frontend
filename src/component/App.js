@@ -6,11 +6,12 @@ import Login from './Login';
 import axios from 'axios';
 import Unique from './Unique';
 import PrivateRoute from '../PrivateRoute/ProtectedRoute';
-import SelectedProject from './SelectedProject';
+import SelectedProject from './BackLogTasks';
 import Profile from './Profile';
 import Projects from './Projects';
 import SidebarLayout from './SidebarLayout';
 import BaseURL from './BaseURL.json';
+import BackLogTasks from './BackLogTasks';
 function App() {
     const navigate = useNavigate();
     const baseUrl = BaseURL.baseUrl;
@@ -37,6 +38,7 @@ function App() {
                 localStorage.setItem('userName', res.data.username)
             }).catch((err) => { alert("Kullanıcı Adı veya parola hatalı") })
     }
+    
     const [isLogged, setIsLogged] = useState(false)
     return (
         <>
@@ -48,6 +50,7 @@ function App() {
                         <Route path='/main' element={<Unique />} />
                         <Route path='/main/profile' element={<Profile />} />
                         <Route path='/main/project' element={<Projects/>} />
+                        <Route path='/main/backlogtasks' element={<BackLogTasks/>}/>
                     </Route>
                 </Route>
                 <Route path="Login" element={<Login login={auth} />}></Route>

@@ -11,14 +11,15 @@ function Unique(props) {
     const addProject = (event) => {
         axios({
             method : "POST",
-            url : "http://localhost:5072/todoitems",
+            url : "http://localhost:3002/projects",
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             data : {
-                "location": Inputloc.current.value,
-                "job" : Inputjob.current.value,
-                "isComplete" : false
+                "name": Inputloc.current.value,
+                "ownerId" : localStorage.getItem('userId'),
+                "teamName" : Inputjob.current.value,
+                "team" : [localStorage.getItem('userId')]
             }
         })
         window.location.reload()
@@ -47,7 +48,7 @@ function Unique(props) {
                             <h5 className="card-title">Proje Ekle</h5>
                             <div className="form-group">
                                 <input placeholder="Projenize isim verin" ref={Inputloc} className="form-control" id="exampleFormControlInput1"/>
-                                <input placeholder="İşlem Giriniz" ref={Inputjob} className="form-control mt-2"/>
+                                <input placeholder="Takımınıza isim verin" ref={Inputjob} className="form-control mt-2"/>
                             <button className="btn btn-primary mt-3" onClick={addProject}>
                                 Proje Ekle
                             </button>
